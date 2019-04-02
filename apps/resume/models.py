@@ -1,5 +1,13 @@
 from django.db import models
 
+from django.conf import settings
+
+class Resume(models.Model):
+    """
+    A resume, which may include multiple ResumeItems
+    """
+    user = models.ForeignKey('auth.User')
+    title = models.CharField(max_length=127)
 
 class ResumeItem(models.Model):
     """
@@ -16,6 +24,8 @@ class ResumeItem(models.Model):
     end_date = models.DateField(null=True, blank=True)
 
     description = models.TextField(max_length=2047, blank=True)
+
+    resume = models.ForeignKey(Resume, on_delete=models.CASCADE)
 
     def __unicode__(self):
         return "{}: {} at {} ({})".format(self.user.username,
